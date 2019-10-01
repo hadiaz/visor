@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<meta charset="utf-8"/>
+		<title>Mi Geoserver</title>
+	
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+		integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+		crossorigin=""/>
+  
+		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+		integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+		crossorigin="">
+  
+		</script>
+		
+		<link rel="stylesheet" href="Control.MiniMap.css" />
+		<script src="Control.MiniMap.js" type= "text/javascript">
+		</script>
+	
+		<link rel="stylesheet" href="L.Control.MousePosition.css" />
+		<script src="L.Control.MousePosition.js" type= "text/javascript">
+		</script>
+		
+		<link rel='stylesheet' href='leaflet.fullscreen.css'  />
+		<script src='Leaflet.fullscreen.js'></script>
+		
+		<link rel="stylesheet" href="leaflet.viewcenter.css" />
+		<script src="leaflet.viewcenter.js"></script>
+	
+		<script src="https://unpkg.com/esri-leaflet@2.3.0/dist/esri-leaflet.js"
+		integrity="sha512-1tScwpjXwwnm6tTva0l0/ZgM3rYNbdyMj5q6RSQMbNX6EUMhYDE3pMRGZaT41zHEvLoWEK7qFEJmZDOoDMU7/Q=="
+		crossorigin=""></script>
+
+		<script type="text/javascript" src="Honduras.js"></script>
+		<script type="text/javascript" src="var1.js"></script>	
+		<script type="text/javascript" src="loti.js"></script>
+		<script type="text/javascript" src="campos.js"></script>
+		<script type="text/javascript" src="casco.js"></script>
+		<script type="text/javascript" src="zamor.js"></script>
+		<script type="text/javascript" src="curva.js"></script>
+		<script type="text/javascript" src="balne.js"></script>
+		<script type="text/javascript" src="verd.js"></script>
+		<script type="text/javascript" src="estac.js"></script>
+	
+		
+		<link rel="stylesheet" href="dist/L.Control.Rose.css" />
+		<script src="dist/L.Control.Rose.js"></script>
+
+		<link rel="stylesheet" href="cc/Control.Coordinates.css">
+		<script src="cc/Control.Coordinates.js"></script>
+		
+		<link rel="stylesheet" href="dvf.css" /> 
+		<script src="leaflet-dvf.js"></script> 
+		<script src="leaflet-dvf.markers.js"></script>
+		
+		<script src="Leaflet.MakiMarkers.js"></script>
+		
+		<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+		<link rel="stylesheet" href="leaflet.awesome-markers.css">
+		<script src="leaflet.awesome-markers.js"></script>
+		
+		<link rel="stylesheet" href="L.Control.Zoomslider.css" />
+		<script src="L.Control.Zoomslider.js" type="text/javascript"></script>
+	
+		<link href="L.Control.Zoomslider.css" rel="stylesheet" />
+		<script src="L.Control.Zoomslider.js"></script>
+		<script src="https://harrywood.co.uk/maps/examples/leaflet/leaflet-plugins/layer/vector/KML.js"></script>
+		
+		
+		<style>
+					
+					#map {
+					width: 100%;
+					height: 600px;
+					box-shadow: 5px 5px 5px #888;
+					}
+					.info {
+					padding: 6px 8px;
+					font: 14px/16px Arial, Helvetica, sans-serif;
+					background: white;
+					background: rgba(255,255,255,0.8);
+					box-shadow: 0 0 15px rgba(0,0,0,0.2);
+					border-radius: 5px;
+					}
+					.info h2 {
+					margin: 0 0 5px;
+					color: #777;
+					}
+					.legend {
+					line-height: 18px;
+					color: #555;
+					}
+				
+					.legend I {
+					width: 18px;
+					height: 18px;
+					float: left;
+					margin-right: 8px;
+					opacity: 0.7;
+					}
+					
+		</style>
+		
+	</head>
+	
+	<body>
+		<div id="map" style="width: 1300px; height: 600px;"></div>
+		<div class='space-bottom'></div>
+    
+		<div id="rose"></div>
+	
+			
+		<script>
+	
+		var osm = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
+		{attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>', 
+		id: 'mapbox.satellite', 
+		accessToken:'pk.eyJ1IjoiaGRpYXp0YWJvcmEiLCJhIjoiY2swNXg4aTd0MDRqYjNpcWIzZHEzYzhtMyJ9.sugANitQSoCqCAuTgzthnA',
+		maxZoom: 20,
+		minZoom: 6,
+		keyboard: true
+		})
+		
+		var osmc = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
+		{attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>', 
+		id: 'mapbox.comic', 
+		accessToken:'pk.eyJ1IjoiaGRpYXp0YWJvcmEiLCJhIjoiY2swNXg4aTd0MDRqYjNpcWIzZHEzYzhtMyJ9.sugANitQSoCqCAuTgzthnA',
+		maxZoom: 20,
+		minZoom: 6,
+		keyboard: true
+		})
+		
+		var osm2 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', 
+		{attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>', 
+		id: 'mapbox.pencil', 
+		accessToken:'pk.eyJ1IjoiaGRpYXp0YWJvcmEiLCJhIjoiY2swNXg4aTd0MDRqYjNpcWIzZHEzYzhtMyJ9.sugANitQSoCqCAuTgzthnA',
+		maxZoom: 20,
+		minZoom: 4,
+		keyboard: true
+		
+		});
+		
+		var ESRI = L.esri.basemapLayer('ImageryFirefly');
+		
+		var ESRI_topo = L.esri.basemapLayer('Topographic');
+		
+		var ESRI_streets = L.esri.basemapLayer('Streets');
+		
+		var mapa = L.map('map',{
+		center: [14.768007, -88.782241],
+		zoom:15,
+		layers: osmc,
+		zoomControl: false,
+		fullscreenControl: {pseudoFullscreen: true, position: 'topleft'
+		},
+		maxBounds: [[14.797478, -88.778297],[14.755573, -88.775804]]
+		});
+		
+		var parquecentral = L.marker([14.767626, -88.778052]);
+		mapa.addLayer(parquecentral);
+		parquecentral.bindPopup("Parque Central, Santa Rosa de Copan");
+		
+		
+		var icono1 = L.icon({
+		iconUrl: 'divina.png',
+		iconSize: [25, 25],
+		});
+		var marker1= L.marker([14.764353, -88.774863], {icon: icono1}).addTo(mapa);
+		marker1.bindPopup("Iglesia Divina Misericordia");
+				
+		var icono2 = L.icon({
+		iconUrl: 'sergio.png',
+		iconSize: [25, 25],
+		});
+		var marker2= L.marker([14.780608, -88.782443], {icon: icono2}).addTo(mapa);
+		marker2.bindPopup("Estadio Sergio Antonio Reyes");
+		
+		var icono3 = L.icon({
+		iconUrl: 'bus.png',
+		iconSize: [25, 25],
+		});
+		var marker3= L.marker([14.777539, -88.779332], {icon: icono3}).addTo(mapa);
+		marker3.bindPopup("Estacion de Buses de Santa Rosa de Copan");
+		
+		var icono4 = L.icon({
+		iconUrl: 'unicah.png',
+		iconSize: [30, 30],
+		});
+		var marker3= L.marker([14.775004, -88.783199], {icon: icono4}).addTo(mapa);
+		marker3.bindPopup("Universidad Catolica de Honduras");
+		
+		var icono4 = L.icon({
+		iconUrl: 'b4.png',
+		iconSize: [25, 25],
+		});
+		var marker3= L.marker([14.766763, -88.779689], {icon: icono4}).addTo(mapa);
+		marker3.bindPopup("La Bebiata B4bar");
+		
+	
+		L.MakiMarkers.accessToken = "pk.eyJ1IjoiaGRpYXp0YWJvcmEiLCJhIjoiY2swNXg4aTd0MDRqYjNpcWIzZHEzYzhtMyJ9.sugANitQSoCqCAuTgzthnA";
+		
+		var mark1 = new L.MapMarker([14.767508, -88.778032], {
+		radius: 10,
+		fillOpacity:0.6,
+		fillColor:'white',
+		color:'blue',
+		innerRadius:4,
+		numberOfSides:2,
+		rotation:0,   
+		});
+		mapa.addLayer(mark1);
+		mark1.bindPopup("Centro de Informacion Turistica");
+				
+		var dvf2 = new L.RegularPolygonMarker([14.767381, -88.779474], {
+		numberOfSides: 3,
+		rotation: 0,
+		radius: 15,
+		fillColor:'green',
+		fillOpacity:1,
+		opacity:1,
+		weight:1,
+  
+		});
+		mapa.addLayer(dvf2);
+		dvf2.bindPopup("New York Discoteque");
+	
+
+		var estrella = new L.StarMarker([14.766916, -88.775531], {
+		numberOfPoints:8,
+		opacity:1,
+		weight:2,
+		fillColor:'red',
+		fillOpacity:1,
+		radius:10});
+
+		mapa.addLayer(estrella);
+		estrella.bindPopup("12 Batallon de Infanteria");
+
+	
+		var polImagen1 = new L.RegularPolygonMarker([14.767645, -88.777618], {
+		numberOfSides: 15,
+		rotation: 60,
+		radius: 30,
+		fillColor:'Red',
+		fillOpacity:1,
+		opacity:1,
+		weight:1,
+		imageCircleUrl: 'cine_hispano.jpg' 
+		});
+
+		mapa.addLayer(polImagen1);  
+		polImagen1.bindPopup("Cine Hispano");
+				
+	
+		var marcador_muni = L.marker([14.767489, -88.778605]);
+		mapa.addLayer(marcador_muni);
+		marcador_muni.bindPopup("Municipalidad de Santa Rosa de Copán");
+		
+			
+		var marcador_centro = L.marker(mapa.getCenter(),{opacity:0.95});
+		mapa.addLayer(marcador_centro);
+		marcador_centro.bindPopup("Mi Casa");
+				
+		var mark1 = new L.MapMarker([14.772105, -88.787594], {
+		radius: 25,
+		fillOpacity:0.5,
+		fillColor:'red0',
+		color:'blue',
+		innerRadius:8,
+		numberOfSides:6,
+		rotation:15,   
+		});
+
+		mapa.addLayer(mark1);
+		mark1.bindPopup("Parque Recreativo El Cerrito");
+		
+		var honduras = new L.geoJson(honduras, {'color':"green", 'weight':2.0, 'fill': false}).addTo(mapa);
+		var loti = new L.geoJson(loti, {'dashArray':12, 'color':"#FF00FF", 'weight':1.0, 'fill': false});
+		var recrea = new L.geoJson(recrea, {'dashArray':12, 'color':"black", 'weight':1.0, 'fill': false});
+		var campos = new L.geoJson(campos, {'dashArray':12, 'color':"#808b96", 'weight':1.0, 'fill': false});
+		var casco = new L.geoJson(casco, {'color':"red", 'weight':1.0, 'fill': false});
+		var zamor = new L.geoJson(zamor, {'dashArray':12, 'color':"red", 'weight':1.0, 'fill': false});
+		var curvas = new L.geoJson(curvas, {'dashArray':1, 'color':"#d35400", 'weight':1.0, 'fill': false});
+		var balne = new L.geoJson(balne, {'dashArray':12, 'color':"#abebc6", 'weight':1.0, 'fill': false});
+		var verd = new L.geoJson(verd, {'dashArray':12, 'color':"#e67e22", 'weight':1.0, 'fill': false});
+		var estac = new L.geoJson(estac, {'dashArray':3, 'color':"yellow", 'weight':2.0, 'fill': false}).addTo(mapa);
+	
+				
+		
+		var imageBounds = [[13.933951, -87.294680],[13.934119, -87.294457]];
+		var me = L.imageOverlay("me.png",
+			imageBounds, {opacity: 1});
+		var hola = L.layerGroup([me, var1]);
+		
+		var capasBase = {
+			"Streets-Satelite": osm,
+			"Estilo 'Animado'": osmc,
+			"Esri - Calles": ESRI_topo,
+			"Esri - Imagery": ESRI,
+			"Esri - Topografico": ESRI_topo,
+			};
+		
+		var capasOverlay = {
+			
+			"Nuevas Lotificaciones": loti,
+			"Areas Recreativas": campos,
+			"Casco Historico": casco,
+			"Zona de Amortiguamiento": zamor,
+			"Curvas de Nivel": curvas,
+			"Balnearios": balne,
+			"Areas Verdes": verd,
+			"Estacionamientos": estac,
+	
+			};
+		
+		var rose = L.control.rose('rose', {position:'bottomleft', icon:'nautical', iSize:'medium', opacity:0.8});
+			rose.addTo(mapa)
+		
+		var c = new L.Control.Coordinates();
+		c.addTo(mapa);
+
+		mapa.on('click', function(e) {
+		c.setCoordinates(e);
+		});
+
+		var title = L.control();
+		title.onAdd = function (map) {
+		var div = L.DomUtil.create('div', 'info');
+		div.innerHTML +='<h2>Santa Rosa de Copán</h2>Información de la ciudad de ilusión';
+		return div;
+		};
+		title.addTo(mapa);
+		
+			var redMarker = L.AwesomeMarkers.icon({
+			icon: 'coffee',
+			markerColor: 'red'
+			});
+      
+		L.marker([14.767236, -88.777555], {icon: redMarker}).addTo(mapa);
+		
+		new L.control.layers(capasBase, capasOverlay,{collapsed:true}).addTo(mapa);
+		
+		new L.Control.Zoom({ position: 'topright'}).addTo(mapa);
+		
+		var miniMap = new L.Control.MiniMap(osm2,{ toggleDisplay: true, position: 'bottomright' }).addTo(mapa);
+		var MousePosition = new L.control.mousePosition(osm).addTo(mapa);
+		var escala = L.control.scale().addTo(mapa);
+		var viewCenter = new L.Control.ViewCenter(mapa);
+			mapa.addControl(viewCenter);
+		
+	</script>
+	
+	</body>
+	<p><i><strong><font size="150", color="Red">Harvin Díaz</font></strong></i></P>
+</html>
